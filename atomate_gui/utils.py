@@ -101,22 +101,3 @@ def insert_components(queries, fields, collection):
                 'text-align': 'center',
                 }
             )
-
-
-def insert_components(queries, fields, collection):
-    children_list = []
-    for query in queries:
-        children_list.append(choose_component(query, collection))
-
-    for field in fields:
-        children_list.append(choose_component(field, collection))
-
-    return html.Div(
-            id='query_components',
-            children = children_list,
-            style={
-                'width': '50%',
-                'margin-bottom': '20px',
-                'text-align': 'center',
-                }
-            )

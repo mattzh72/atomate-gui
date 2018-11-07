@@ -1,7 +1,11 @@
 from atomate_gui.utils import insert_components
-from atomate_gui.app import collection
 import dash_core_components as dcc
 import dash_html_components as html
+from pymongo import MongoClient
+
+client = MongoClient()
+db = client['thermoelectrics']
+collection = db['materials']
 
 queries = ["nelements"]
 fields = ["bandgap", "chemsys"]
