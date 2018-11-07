@@ -11,7 +11,7 @@ def return_posts(collection):
     return text
 
 
-def generate_table(data_frame, max_rows=10):
+def generate_table(data_frame, max_rows=20):
     return html.Table(
         # Header
         [html.Tr([html.Th(col) for col in data_frame.columns])] +
@@ -46,13 +46,13 @@ def detect_range(field_name, collection):
 
 
 def choose_component(field_name, collection): #instanceof
-    field_type = type(collection.find_one()[field_name])
+    first_entry = collection.find_one()[field_name]
 
-    if isinstance(field_type, int) or isinstance(field_type, float):
+    if isinstance(first_entry, int) or isinstance(first_entry, float):
         min_val, max_val = detect_range(field_name, collection)
         step_val = 1
 
-        if isinstance(field_type, float):
+        if isinstance(first_entry, float):
             step_val = (max_val - min_val)/100
 
         return html.Div(
@@ -69,7 +69,7 @@ def choose_component(field_name, collection): #instanceof
                                 )
                             ]
                         )
-    elif field_type is str:
+    elif isinstance(first_entry, str):
         return html.Div(
                     children=[dcc.Input(
                             id=field_name + "-input",
@@ -88,9 +88,6 @@ def insert_components(queries, fields, collection):
     children_list = []
     for query in queries:
         children_list.append(choose_component(query, collection))
-
-    for field in fields:
-        children_list.append(choose_component(field, collection))
 
     return html.Div(
             id='query_components',

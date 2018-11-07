@@ -1,4 +1,4 @@
-from atomate_gui.utils import insert_components
+from utils import insert_components
 import dash_core_components as dcc
 import dash_html_components as html
 from pymongo import MongoClient
@@ -65,7 +65,7 @@ def serve_layout():
         id=query_input_id,
         placeholder='Put a query here...',
         type='text',
-        value="{'nelements':4}",
+        value="{'nelements': {'$gte': 6, '$lte': 8}}",
         style={
             'width': '60%',
             'margin-bottom': '10px',
