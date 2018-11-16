@@ -1,24 +1,10 @@
-from utils import insert_components
+from data import insert_components
 import dash_core_components as dcc
 import dash_html_components as html
-from pymongo import MongoClient
-
-client = MongoClient()
-db = client['thermoelectrics']
-collection = db['materials']
-
-queries = ["nelements"]
-fields = ["bandgap", "chemsys"]
-
-ROW_LABEL = "chemsys"
-
-query_input_id = "query-input"
-fields_input_id = "field_input"
-textarea_output_id = "textarea_output"
-table_output_id = "table_output"
+from utils import query_input_id, fields_input_id, table_output_id
 
 
-def serve_layout():
+def serve_layout(queries, collection):
     return html.Div(children=[
     html.H1(
         children='Materials DB Web UI',
@@ -59,7 +45,7 @@ def serve_layout():
         multiple=False
     ),
 
-    insert_components(queries, fields, collection),
+    insert_components(queries, collection),
 
     dcc.Input(
         id=query_input_id,
@@ -76,7 +62,7 @@ def serve_layout():
         id=fields_input_id,
         placeholder='Put the fields you want to display here...',
         type='text',
-        value="{'bandgap': 1, 'chemsys': 1, 'bandstructure': 1, '_id': 0}",
+        value="{'bandgap': 1, 'chemsys': 1, 'bandstructure': 1, '_id': 0}", #
         style={
             'width': '60%',
             'margin-bottom': '20px',
