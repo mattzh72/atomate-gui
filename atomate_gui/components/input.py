@@ -4,27 +4,37 @@ from components.base import BaseComponent
 class Input(BaseComponent):
     type = 'input'
 
-    def __init__(self, name):
-        BaseComponent.__init__(self, name)
-        self.placeholder = "Input for " + self.name
-        self.query_template = "{{ '{0}': '{1}' }}"
+    def __init__(self, name, active=False):
+        BaseComponent.__init__(self, name, active)
+        self.placeholder = 'Enter a value for ' + self.name
 
     def generate_component(self, html, dcc):
+        display = 'none'
+        if self.active:
+            display = 'block'
+
         return html.Div(
             children=[dcc.Input(
                 id=self.name,
                 className=self.class_name,
-                placeholder='Enter a value for ' + self.name,
+                placeholder=self.placeholder,
                 type='text',
-                value=self.placeholder
+                value="",
             ),
                 html.Div(
-                    id=self.output_div_name
+                    id=self.output_div_name,
+                    style={
+                        'margin-top': '2px',
+                        'margin-bottom': '10px',
+                        'font-size': '10px',
+                    }
                 )
-            ]
+            ],
+            style={
+                'display': display,
+                'width': '80%',
+                'margin-left': '10%',
+                'margin-top': '10px',
+                'margin-bottom': '10px',
+            }
         )
-
-    def generate_query(self, name, val):
-        assert type(val) is str, "value is not a list:{0}".format(val)
-
-        return self.query_template.format(name, val)

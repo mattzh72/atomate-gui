@@ -13,7 +13,6 @@ class CollectionTable:
         except Exception:
             return "Not a valid query."
 
-
     def query_data(self, collection, query, fields, row_label="chemsys"):
         mat_structs = {}
 
@@ -21,9 +20,9 @@ class CollectionTable:
             mat_structs[post[row_label]] = post
 
         for mat in mat_structs:
-            for descrips in mat_structs[mat]:
-                if isinstance(mat_structs[mat][descrips], dict):
-                    mat_structs[mat][descrips] = str(mat_structs[mat][descrips])
+            for features in mat_structs[mat]:
+                if isinstance(mat_structs[mat][features], dict):
+                    mat_structs[mat][features] = str(mat_structs[mat][features])
 
         self.data_frame = pd.DataFrame.from_dict(mat_structs, orient='index')
 
