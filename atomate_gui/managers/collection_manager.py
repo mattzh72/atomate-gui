@@ -24,14 +24,15 @@ class CollectionManager:
         fields = self.flatten_collection(self.collection.find_one())
 
         for name, value in fields.items():
-            if isinstance(value, (float, int)) and not isinstance(value, bool):
-                self.metadata['nums'][name] = value
-            elif isinstance(value, bool):
-                self.metadata['bools'][name] = value
-            elif isinstance(value, str):
-                self.metadata['strings'][name] = value
-            elif isinstance(value, list):
-                self.metadata['lists'][name] = value
+            if name[0] != "_":
+                if isinstance(value, (float, int)) and not isinstance(value, bool):
+                    self.metadata['nums'][name] = value
+                elif isinstance(value, bool):
+                    self.metadata['bools'][name] = value
+                elif isinstance(value, str):
+                    self.metadata['strings'][name] = value
+                elif isinstance(value, list):
+                    self.metadata['lists'][name] = value
 
         self.metadata['nums'] = dict.fromkeys(["['" + name + "']" for name in self.metadata['nums'].keys()], [float('inf'), float('-inf')])
 

@@ -36,8 +36,6 @@ sample_entry = {
 }
 
 collection_manager = CollectionManager(collection)
-# collection_manager.get_metadata()
-# print(collection_manager.metadata)
 
 component_manager = ComponentManager()
 component_manager.add_components(collection_manager)

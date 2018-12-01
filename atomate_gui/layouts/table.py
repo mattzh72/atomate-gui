@@ -34,7 +34,7 @@ def serve_layout(manager, html, dcc, ids):
 
     return html.Div(children=[
         html.H1(
-            children='Materials DB Web UI',
+            children='Materialize Search Engine',
             style={
                 'width': '100%',
                 'margin-bottom': '10px',

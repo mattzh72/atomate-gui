@@ -30,6 +30,7 @@ class Input(BaseComponent):
                     }
                 )
             ],
+            id=self.parent_name,
             style={
                 'display': display,
                 'width': '80%',

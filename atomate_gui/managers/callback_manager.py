@@ -1,7 +1,7 @@
 from dash.dependencies import Input, Output
 from components.table import CollectionTable
 from managers.query_manager import QueryManager
-import ast
+
 
 class CallbackManager:
     def __init__(self):
@@ -25,21 +25,22 @@ class CallbackManager:
             self.io[component.name] = {
                 "output": Output(component.name+'-output-container', 'children'),
                 "inputs": [Input(component.name, 'id'), Input(component.name, 'value')],
-                "func": lambda name, val: component.generate_query(name, val),
+                "func": lambda name, val: "You selected {0} for {1}".format(val, name),
             }
 
     def generate_query_io(self, components, ids):
         inputs = []
-        # inputs = [Input(ids["component-container_id"], 'children')]
+
         for component in components:
-            inputs.append(Input(component.name+'-output-container', 'children'))
-        # query_manager = QueryManager()
+            inputs.append(Input(component.name, 'id'))
+            inputs.append(Input(component.name, 'value'))
+            inputs.append(Input(component.name + '-parent-container', 'style'))
+        query_manager = QueryManager()
 
         self.io[ids["query_input_id"]] = {
             "output": Output(ids["query_input_id"], 'value'),
             "inputs": inputs,
-            # "func": lambda children: query_manager.create_query(children),
-            "func": lambda *args: "{{ '$and': {0} }}".format([ast.literal_eval(arg) for arg in [a for a in args if a != "@HIDDEN"]])
+            "func": lambda *args: query_manager.create_query(args[::3], args[1::3], args[2::3])
         }
 
     def generate_table_io(self, collection, html, ids):

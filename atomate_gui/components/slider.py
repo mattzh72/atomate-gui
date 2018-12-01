@@ -84,6 +84,7 @@ class Slider(BaseComponent):
                     }
                 )
             ],
+            id=self.parent_name,
             style={
                 'display': display,
                 'width': '80%',
