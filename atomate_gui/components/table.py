@@ -1,19 +1,21 @@
 import ast
 import pandas as pd
+import dash_html_components as html
+from app import collection
 
 
 class CollectionTable:
     def __init__(self):
         self.data_frame = None
 
-    def create_callback(self, query, fields, collection, html):
+    def create_callback(self, query, fields):
         try:
-            self.query_data(collection, query, fields)
-            return [self.generate_table(html)]
+            self.query_data(query, fields)
+            return [self.generate_search_table()]
         except Exception:
             return "Not a valid query."
 
-    def query_data(self, collection, query, fields, row_label="chemsys"):
+    def query_data(self, query, fields, row_label="chemsys"):
         mat_structs = {}
 
         for post in collection.find(ast.literal_eval(query), ast.literal_eval(fields)):
@@ -26,16 +28,34 @@ class CollectionTable:
 
         self.data_frame = pd.DataFrame.from_dict(mat_structs, orient='index')
 
-    def generate_table(self, html, max_rows=20):
+    def generate_search_table(self, max_rows=20):
+        row_range = range(min(len(self.data_frame), max_rows))
+
+        header = [html.Tr([html.Th("")]+ [html.Th(col) for col in self.data_frame.columns])]
+        body = [html.Tr(
+            [html.Td(html.A("View", href="/{0}".format(self.data_frame.iloc[i]["chemsys"]), target='_blank'))] +
+            [html.Td(self.data_frame.iloc[i][col]) for col in self.data_frame.columns]) for i in row_range]
+
+        table_output = header + body
+
         return html.Table(
-            # Header
-            [html.Tr([html.Th(col) for col in self.data_frame.columns])] +
+            table_output,
+            style={
+                'width': '50%',
+                'margin-bottom': '20px',
+                'text-align': 'center',
+                'margin-left': '25%'
+            }
+        )
 
-            # Body
-            [html.Tr([
-                html.Td(self.data_frame.iloc[i][col]) for col in self.data_frame.columns
-            ]) for i in range(min(len(self.data_frame), max_rows))],
+    def generate_details_table(self, fields_dict):
+        table_output = []
 
+        for k, v in fields_dict.items():
+            table_output += [html.Tr([html.Td(k), html.Td(v)])]
+
+        return html.Table(
+            table_output,
             style={
                 'width': '50%',
                 'margin-bottom': '20px',

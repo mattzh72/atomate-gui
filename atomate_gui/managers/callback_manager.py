@@ -1,6 +1,7 @@
 from dash.dependencies import Input, Output
 from components.table import CollectionTable
 from managers.query_manager import QueryManager
+from app import ids
 
 
 class CallbackManager:
@@ -14,11 +15,11 @@ class CallbackManager:
                 callback_data["inputs"]
             )(callback_data["func"])
 
-    def generate_all_io(self, manager, collection, html, dcc, ids):
+    def generate_all_io(self, manager):
         self.generate_output_io(manager.components)
-        self.generate_dropdown_io(manager, html, dcc, ids)
-        self.generate_query_io(manager.components, ids)
-        self.generate_table_io(collection, html, ids)
+        self.generate_dropdown_io(manager)
+        self.generate_query_io(manager.components)
+        self.generate_table_io()
 
     def generate_output_io(self, components):
         for component in components:
@@ -28,7 +29,7 @@ class CallbackManager:
                 "func": lambda name, val: "You selected {0} for {1}".format(val, name),
             }
 
-    def generate_query_io(self, components, ids):
+    def generate_query_io(self, components):
         inputs = []
 
         for component in components:
@@ -37,23 +38,23 @@ class CallbackManager:
             inputs.append(Input(component.name + '-parent-container', 'style'))
         query_manager = QueryManager()
 
-        self.io[ids["query_input_id"]] = {
-            "output": Output(ids["query_input_id"], 'value'),
+        self.io[ids["query_input"]] = {
+            "output": Output(ids["query_input"], 'value'),
             "inputs": inputs,
             "func": lambda *args: query_manager.create_query(args[::3], args[1::3], args[2::3])
         }
 
-    def generate_table_io(self, collection, html, ids):
+    def generate_table_io(self):
         table = CollectionTable()
         self.io["data-table"] = {
-            "output": Output(ids["table_output_id"], 'children'),
-            "inputs": [Input(ids["query_input_id"], 'value'), Input(ids["fields_input_id"], 'value')],
-            "func": lambda query, fields: table.create_callback(query, fields, collection, html),
+            "output": Output(ids["table_output"], 'children'),
+            "inputs": [Input(ids["query_input"], 'value'), Input(ids["fields_input"], 'value')],
+            "func": lambda query, fields: table.create_callback(query, fields),
         }
 
-    def generate_dropdown_io(self, manager, html, dcc, ids):
+    def generate_dropdown_io(self, manager):
         self.io["component_dropdown"] = {
-            "output": Output(ids["component-container_id"], 'children'),
-            "inputs": [Input(ids["component_dropdown_id"], 'value')],
-            "func": lambda values: manager.dropdown.create_callback(values, manager, html, dcc),
+            "output": Output(ids["component_container"], 'children'),
+            "inputs": [Input(ids["component_dropdown"], 'value')],
+            "func": lambda values: manager.dropdown.create_callback(values, manager),
         }

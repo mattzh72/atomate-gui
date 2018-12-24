@@ -1,7 +1,6 @@
 from components.slider import Slider
 from components.input import Input
 from components.dropdown import ComponentDropdown
-import collections
 
 
 class ComponentManager:
@@ -45,11 +44,11 @@ class ComponentManager:
     def remove_all_components(self):
         self.components = []
 
-    def generate_components(self, html, dcc):
+    def generate_components(self):
         html_components = []
 
         for component in self.components:
-            html_components.append(component.generate_component(html, dcc))
+            html_components.append(component.generate_component())
 
         return html_components
 

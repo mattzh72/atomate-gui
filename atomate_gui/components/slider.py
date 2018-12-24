@@ -1,4 +1,6 @@
 from components.base import BaseComponent
+import dash_core_components as dcc
+import dash_html_components as html
 import math
 
 class Slider(BaseComponent):
@@ -59,7 +61,7 @@ class Slider(BaseComponent):
         else:
             self.step = 1
 
-    def generate_component(self, html, dcc):
+    def generate_component(self):
         display = 'none'
         if self.active:
             display = 'block'

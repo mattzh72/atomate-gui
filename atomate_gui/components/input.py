@@ -1,5 +1,6 @@
 from components.base import BaseComponent
-
+import dash_core_components as dcc
+import dash_html_components as html
 
 class Input(BaseComponent):
     type = 'input'
@@ -8,7 +9,7 @@ class Input(BaseComponent):
         BaseComponent.__init__(self, name, active)
         self.placeholder = 'Enter a value for ' + self.name
 
-    def generate_component(self, html, dcc):
+    def generate_component(self):
         display = 'none'
         if self.active:
             display = 'block'

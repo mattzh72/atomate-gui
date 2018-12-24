@@ -1,3 +1,8 @@
+import dash_core_components as dcc
+import dash_html_components as html
+
+from app import ids
+
 class ComponentDropdown:
     def __init__(self):
         self.options = []
@@ -11,7 +16,7 @@ class ComponentDropdown:
     def clear_options(self):
         self.options = []
 
-    def create_callback(self, values, manager, html, dcc):
+    def create_callback(self, values, manager):
         components = manager.components
         active_fields = []
 
@@ -21,11 +26,11 @@ class ComponentDropdown:
 
         manager.update_activity(active_fields)
 
-        return manager.generate_components(html, dcc)
+        return manager.generate_components()
 
-    def generate_component(self, dcc, ids):
+    def generate_component(self):
         return dcc.Dropdown(
-            id=ids["component_dropdown_id"],
+            id=ids["component_dropdown"],
             options=self.options,
             multi=True,
             value="",
