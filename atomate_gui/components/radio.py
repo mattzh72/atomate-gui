@@ -3,12 +3,13 @@ import dash_core_components as dcc
 import dash_html_components as html
 
 
-class Input(BaseComponent):
-    type = 'input'
+class RadioBoolean(BaseComponent):
+    type = 'radio'
 
     def __init__(self, name, active=False):
         BaseComponent.__init__(self, name, active)
-        self.placeholder = 'Enter a value for ' + self.name
+        self.truthy_val = True
+        self.falsey_val = False
 
     def generate_component(self):
         display = 'none'
@@ -16,17 +17,18 @@ class Input(BaseComponent):
             display = 'block'
 
         return html.Div(
-            children=[dcc.Input(
+            children=[dcc.RadioItems(
                 id=self.name,
                 className=self.class_name,
-                placeholder=self.placeholder,
-                type='text',
-                value="",
+                options=[
+                    {'label': 'True', 'value': self.truthy_val},
+                    {'label': 'False', 'value': self.falsey_val},
+                ],
             ),
                 html.Div(
                     id=self.output_div_name,
                     style={
-                        'margin-top': '2px',
+                        'margin-top': '20px',
                         'margin-bottom': '10px',
                         'font-size': '10px',
                     }
@@ -41,3 +43,6 @@ class Input(BaseComponent):
                 'margin-bottom': '10px',
             }
         )
+
+
+

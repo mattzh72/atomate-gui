@@ -93,7 +93,7 @@ def layout():
             id=ids["fields_input"],
             placeholder='Put the fields you want to display here...',
             type='text',
-            value="{'bandgap': 1, 'chemsys': 1, 'bandstructure': 1, '_id': 0}", #
+            value="{'bandgap': 1, 'chemsys': 1, 'bandstructure': 1, 'material_id': 1, '_id': 0}",
             style={
                 'width': '60%',
                 'margin-bottom': '20px',

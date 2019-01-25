@@ -1,8 +1,6 @@
 from app import app, collection
 from components.table import CollectionTable
 
-from app import collection
-
 """
 spacegroup.number, 
 spacegroup.crystal_system, 
@@ -19,12 +17,19 @@ bandstructure.is_metal
 def layout(pathname):
     if pathname:
         detail_table = CollectionTable()
-        query = {'chemsys': pathname[1:]}
-        fields = {'_id':0}
-        entry = collection.find(query, fields)[0]
+        query = {'material_id': pathname[1:]}
+        entry = collection.find(query)[0]
 
         display_fields = {
             "spacegroup #": entry['spacegroup']['number'],
+            "crystal system": entry['spacegroup']['crystal_system'],
+            "sites": len(entry['structure']['sites']),
+            "is metal": entry['bandstructure']['is_metal'],
+            "volume:": entry['structure']['lattice']['volume'],
+            "e_above_hull": entry['stability']['e_above_hull'],
+            "decomposes into": entry['stability']['decomposes_to'],
+            "bandgap": entry['bandstructure']['bandgap'],
+            "is direct": entry['bandstructure']['is_gap_direct'],
         }
 
         return detail_table.generate_details_table(display_fields)

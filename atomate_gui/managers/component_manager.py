@@ -1,6 +1,7 @@
 from components.slider import Slider
 from components.input import Input
 from components.dropdown import ComponentDropdown
+from components.radio import RadioBoolean
 
 
 class ComponentManager:
@@ -21,6 +22,8 @@ class ComponentManager:
                     component.auto_generate_marks()
                 elif data_type == 'strings':
                     component = Input(name)
+                elif data_type == 'bools':
+                    component = RadioBoolean(name)
 
                 if component:
                     self.components.append(component)

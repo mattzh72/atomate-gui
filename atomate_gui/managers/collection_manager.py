@@ -25,6 +25,8 @@ class CollectionManager:
 
         for name, value in fields.items():
             if name[0] != "_":
+                name = "['" + name + "']"
+
                 if isinstance(value, (float, int)) and not isinstance(value, bool):
                     self.metadata['nums'][name] = value
                 elif isinstance(value, bool):
@@ -34,7 +36,7 @@ class CollectionManager:
                 elif isinstance(value, list):
                     self.metadata['lists'][name] = value
 
-        self.metadata['nums'] = dict.fromkeys(["['" + name + "']" for name in self.metadata['nums'].keys()], [float('inf'), float('-inf')])
+        self.metadata['nums'] = dict.fromkeys(self.metadata['nums'].keys(), [float('inf'), float('-inf')])
 
         for post in self.collection.find():
             for name, value in self.metadata['nums'].items():

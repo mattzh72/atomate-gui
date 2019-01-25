@@ -3,6 +3,7 @@ import dash_html_components as html
 
 from app import ids
 
+
 class ComponentDropdown:
     def __init__(self):
         self.options = []
@@ -10,7 +11,7 @@ class ComponentDropdown:
     def add_options(self, components):
         for component in components:
             self.options.append({
-                'label': component.mongo_name, 'value': component.mongo_name
+                'label': component.mongo_name, 'value': component.name
             })
 
     def clear_options(self):
@@ -21,12 +22,25 @@ class ComponentDropdown:
         active_fields = []
 
         for component in components:
-            if component.mongo_name in values:
+            if component.name in values:
                 active_fields.append(component.name)
 
         manager.update_activity(active_fields)
 
         return manager.generate_components()
+
+    def create_callback_WIP(self, values, name):
+        display = 'none'
+        if name in values:
+            display = 'block'
+
+        return {
+                'display': display,
+                'width': '80%',
+                'margin-left': '10%',
+                'margin-top': '10px',
+                'margin-bottom': '10px',
+            }
 
     def generate_component(self):
         return dcc.Dropdown(

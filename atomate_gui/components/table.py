@@ -7,6 +7,7 @@ from app import collection
 class CollectionTable:
     def __init__(self):
         self.data_frame = None
+        self.ids = {}
 
     def create_callback(self, query, fields):
         try:
@@ -19,21 +20,21 @@ class CollectionTable:
         mat_structs = {}
 
         for post in collection.find(ast.literal_eval(query), ast.literal_eval(fields)):
+            self.ids[post[row_label]] = post.pop('material_id')
             mat_structs[post[row_label]] = post
 
         for mat in mat_structs:
             for features in mat_structs[mat]:
-                if isinstance(mat_structs[mat][features], dict):
-                    mat_structs[mat][features] = str(mat_structs[mat][features])
+                mat_structs[mat][features] = str(mat_structs[mat][features])
 
         self.data_frame = pd.DataFrame.from_dict(mat_structs, orient='index')
 
     def generate_search_table(self, max_rows=20):
         row_range = range(min(len(self.data_frame), max_rows))
 
-        header = [html.Tr([html.Th("")]+ [html.Th(col) for col in self.data_frame.columns])]
+        header = [html.Tr([html.Th("")] + [html.Th(col) for col in self.data_frame.columns])]
         body = [html.Tr(
-            [html.Td(html.A("View", href="/{0}".format(self.data_frame.iloc[i]["chemsys"]), target='_blank'))] +
+            [html.Td(html.A("View", href="/{0}".format(self.ids[self.data_frame.iloc[i]['chemsys']]), target='_blank'))] +
             [html.Td(self.data_frame.iloc[i][col]) for col in self.data_frame.columns]) for i in row_range]
 
         table_output = header + body
@@ -52,7 +53,7 @@ class CollectionTable:
         table_output = []
 
         for k, v in fields_dict.items():
-            table_output += [html.Tr([html.Td(k), html.Td(v)])]
+            table_output += [html.Tr([html.Td(str(k)), html.Td(str(v))])]
 
         return html.Table(
             table_output,

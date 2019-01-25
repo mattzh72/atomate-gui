@@ -3,6 +3,7 @@ import dash_core_components as dcc
 import dash_html_components as html
 import math
 
+
 class Slider(BaseComponent):
     type = 'slider'
 
@@ -19,8 +20,7 @@ class Slider(BaseComponent):
         self.auto_generate_marks()
 
     def auto_generate_marks(self):
-        range = self.max - self.min
-        mark_step = 0
+        range, mark_step = self.max - self.min, 0
 
         if range < 10:
             mark_step = 1
