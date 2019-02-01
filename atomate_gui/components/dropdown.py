@@ -8,11 +8,11 @@ class ComponentDropdown:
     def __init__(self):
         self.options = []
         self.values = [
-            # "['nelements']",
-            # "['material_id']",
-            # "['spacegroup']['number']",
-            # "['stability']['e_above_hull']",
-            # "['bandstructure']['is_gap_direct']",
+            "['nelements']",
+            "['material_id']",
+            "['spacegroup']['number']",
+            "['stability']['e_above_hull']",
+            "['bandstructure']['is_gap_direct']",
             "['chemsys']"
         ]
 
@@ -38,6 +38,7 @@ class ComponentDropdown:
         return manager.generate_components()
 
     def create_callback_WIP(self, values, name):
+        print("LOL")
         display = 'none'
         if name in values:
             display = 'block'

@@ -63,7 +63,8 @@ class CollectionTable:
         return html.Table(
             table_output,
             style={
-                'margin-bottom': '20px',
+                'width': '75%',
+                'margin': '0 auto',
                 'text-align': 'center',
             }
         )

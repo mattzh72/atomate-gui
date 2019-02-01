@@ -1,7 +1,7 @@
 import ast
 
 
-class QueryManager():
+class QueryManager:
     def __init__(self):
         self.base_query = "{{ '$and': {0} }}"
         self.queries = None

@@ -64,5 +64,5 @@ class CallbackManager:
             self.ios.append({
                 "output": Output(component.parent_name, 'style'),
                 "inputs": [Input(ids["component_dropdown"], 'value')],
-                "func": lambda values: print(values),
+                "func": lambda values: manager.dropdown.create_callback_WIP(values, component.name),
             })
