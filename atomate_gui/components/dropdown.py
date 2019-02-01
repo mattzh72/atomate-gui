@@ -7,6 +7,14 @@ from app import ids
 class ComponentDropdown:
     def __init__(self):
         self.options = []
+        self.values = [
+            # "['nelements']",
+            # "['material_id']",
+            # "['spacegroup']['number']",
+            # "['stability']['e_above_hull']",
+            # "['bandstructure']['is_gap_direct']",
+            "['chemsys']"
+        ]
 
     def add_options(self, components):
         for component in components:
@@ -47,6 +55,6 @@ class ComponentDropdown:
             id=ids["component_dropdown"],
             options=self.options,
             multi=True,
-            value="",
+            value=self.values,
             placeholder="Select query fields...",
         )

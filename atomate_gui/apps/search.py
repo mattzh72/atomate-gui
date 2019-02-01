@@ -81,7 +81,7 @@ def layout():
             id=ids["query_input"],
             placeholder='Put a query here...',
             type='text',
-            value="{'nelements': {'$gte': 6, '$lte': 8}}",
+            value="{ '$and': [{'nelements': {'$gte': 1, '$lte': 8}}] }",
             style={
                 'width': '60%',
                 'margin-bottom': '10px',

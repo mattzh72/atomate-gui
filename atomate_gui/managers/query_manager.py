@@ -7,8 +7,9 @@ class QueryManager():
         self.queries = None
         self.query_templates = {
             "slider": "{{'{0}': {{'$gte': {1}, '$lte': {2}}} }}",
-            "input": "{{'{0}': '{1}' }}",
+            "input": "{{'{0}': {{'$regex' : '.*{1}.*'}} }}",
             "exists": "{{ '{0}': {{ '$exists': 'true' }} }}",
+            "radio": "{{'{0}': {1} }}",
             "hidden": "@HIDDEN",
         }
 
@@ -18,13 +19,14 @@ class QueryManager():
         for name, value, style in zip(names, values, styles):
             if style['display'] == 'block':
                 m_name = name.replace("']['", ".").replace("['", "").replace("']", "")
-                if isinstance(value, list):
+                if value is None:
+                    queries.append(ast.literal_eval(self.query_templates["exists"].format(m_name, value)))
+                elif isinstance(value, list):
                     queries.append(ast.literal_eval(self.query_templates["slider"].format(m_name, value[0], value[1])))
                 elif isinstance(value, str):
-                    if value:
-                        queries.append(ast.literal_eval(self.query_templates["input"].format(m_name, value)))
-                    else:
-                        queries.append(ast.literal_eval(self.query_templates["exists"].format(m_name, value)))
+                    queries.append(ast.literal_eval(self.query_templates["input"].format(m_name, value)))
+                elif isinstance(value, bool):
+                    queries.append(ast.literal_eval(self.query_templates["radio"].format(m_name, value)))
 
         return "{{ '$and': {0} }}".format(queries)
 
