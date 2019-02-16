@@ -9,15 +9,15 @@ class ComponentDropdown:
         self.options = []
         self.values = [
             "['nelements']",
-            "['material_id']",
-            "['spacegroup']['number']",
-            "['stability']['e_above_hull']",
-            "['bandstructure']['is_gap_direct']",
-            "['chemsys']"
+            # "['material_id']",
+            # "['spacegroup']['number']",
+            # "['stability']['e_above_hull']",
+            # "['bandstructure']['is_gap_direct']",
+            # "['chemsys']"
         ]
 
     def add_options(self, components):
-        for component in components:
+        for component in components.values():
             self.options.append({
                 'label': component.mongo_name, 'value': component.name
             })
@@ -25,35 +25,20 @@ class ComponentDropdown:
     def clear_options(self):
         self.options = []
 
-    def create_callback(self, values, manager):
-        components = manager.components
-        active_fields = []
+    def create_callback(self, vals, c_manager):
+        for name in list(c_manager.active_components.keys()):
+            if name not in vals:
+                c_manager.deactivate_component(name)
 
-        for component in components:
-            if component.name in values:
-                active_fields.append(component.name)
+        for val in vals:
+            if val not in list(c_manager.active_components.keys()):
+                c_manager.activate_component(val)
 
-        manager.update_activity(active_fields)
-
-        return manager.generate_components()
-
-    def create_callback_WIP(self, values, name):
-        print("LOL")
-        display = 'none'
-        if name in values:
-            display = 'block'
-
-        return {
-                'display': display,
-                'width': '80%',
-                'margin-left': '10%',
-                'margin-top': '10px',
-                'margin-bottom': '10px',
-            }
+        return c_manager.generate_active_components()
 
     def generate_component(self):
         return dcc.Dropdown(
-            id=ids["component_dropdown"],
+            id=ids["dropdown"],
             options=self.options,
             multi=True,
             value=self.values,

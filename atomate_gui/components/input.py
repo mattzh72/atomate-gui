@@ -6,22 +6,18 @@ import dash_html_components as html
 class Input(BaseComponent):
     type = 'input'
 
-    def __init__(self, name, active=False):
-        BaseComponent.__init__(self, name, active)
+    def __init__(self, name):
+        BaseComponent.__init__(self, name, "", "")
         self.placeholder = 'Enter a value for ' + self.name
 
     def generate_component(self):
-        display = 'none'
-        if self.active:
-            display = 'block'
-
         return html.Div(
             children=[dcc.Input(
                 id=self.name,
                 className=self.class_name,
                 placeholder=self.placeholder,
                 type='text',
-                value="",
+                value=self.value,
             ),
                 html.Div(
                     id=self.output_div_name,
@@ -34,10 +30,16 @@ class Input(BaseComponent):
             ],
             id=self.parent_name,
             style={
-                'display': display,
                 'width': '80%',
                 'margin-left': '10%',
                 'margin-top': '10px',
                 'margin-bottom': '10px',
             }
         )
+
+    def __str__(self):
+        return str({
+            'type': Input.type,
+            'name': self.name
+        })
+

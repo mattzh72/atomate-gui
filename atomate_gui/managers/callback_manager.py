@@ -5,44 +5,42 @@ from app import ids
 
 
 class CallbackManager:
-    def __init__(self):
+    def __init__(self, app, component_manager):
         self.ios = []
+        self.c_manager = component_manager
+        self.app = app
 
-    def attach_callbacks(self, app):
+    def attach_callbacks(self):
+        self.generate_output_io()
+        self.generate_dd_io()
+        self.generate_query_io()
+        self.generate_table_io()
+
         for callback_data in self.ios:
-            app.callback(
+            self.app.callback(
                 callback_data["output"],
                 callback_data["inputs"]
             )(callback_data["func"])
 
-    def generate_all_io(self, manager):
-        self.generate_output_io(manager.components)
-        self.generate_dropdown_io(manager)
-        self.generate_query_io(manager.components)
-        self.generate_table_io()
-        # self.generate_dropdown_io_WIP(manager)
-
-    def generate_output_io(self, components):
-        for component in components:
+    def generate_output_io(self):
+        for c_name in self.c_manager.components.keys():
             self.ios.append({
-                "output": Output(component.name+'-output-container', 'children'),
-                "inputs": [Input(component.name, 'id'), Input(component.name, 'value')],
-                "func": lambda name, val: "You selected {0} for {1}".format(val, name),
+                "output": Output(c_name+'-output-container', 'children'),
+                "inputs": [Input(c_name, 'id'), Input(c_name, 'value')],
+                "func": lambda name, val: self.c_manager.cache_component(name, val),
             })
 
-    def generate_query_io(self, components):
+    def generate_query_io(self):
         inputs = []
 
-        for component in components:
-            inputs.append(Input(component.name, 'id'))
-            inputs.append(Input(component.name, 'value'))
-            inputs.append(Input(component.parent_name, 'style'))
-        query_manager = QueryManager()
+        for c_name in self.c_manager.components.keys():
+            inputs.append(Input(c_name, 'id'))
+            inputs.append(Input(c_name, 'value'))
 
         self.ios.append({
             "output": Output(ids["query_input"], 'value'),
             "inputs": inputs,
-            "func": lambda *args: query_manager.create_query(args[::3], args[1::3], args[2::3])
+            "func": lambda *args: QueryManager().create_query(args[::2], args[1::2])
         })
 
     def generate_table_io(self):
@@ -52,17 +50,9 @@ class CallbackManager:
             "func": lambda query, fields: CollectionTable().create_callback(query, fields),
         })
 
-    def generate_dropdown_io(self, manager):
+    def generate_dd_io(self):
         self.ios.append({
-            "output": Output(ids["component_container"], 'children'),
-            "inputs": [Input(ids["component_dropdown"], 'value')],
-            "func": lambda values: manager.dropdown.create_callback(values, manager),
+            "output": Output(ids["components"], 'children'),
+            "inputs": [Input(ids["dropdown"], 'value')],
+            "func": lambda values: self.c_manager.dropdown.create_callback(values, self.c_manager),
         })
-
-    def generate_dropdown_io_WIP(self, manager):
-        for component in manager.components:
-            self.ios.append({
-                "output": Output(component.parent_name, 'style'),
-                "inputs": [Input(ids["component_dropdown"], 'value')],
-                "func": lambda values: manager.dropdown.create_callback_WIP(values, component.name),
-            })

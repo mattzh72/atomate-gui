@@ -55,7 +55,7 @@ def layout():
                         }
                     ),
                     html.Div(
-                        id=ids["component_container"],
+                        id=ids["components"],
                         children=[],
                         style={
                             'width': '80%',
@@ -77,9 +77,11 @@ def layout():
             }
         ),
 
+        html.Div(id='my-div'),
+
         dcc.Input(
             id=ids["query_input"],
-            placeholder='Put a query here...',
+            placeholder='Dropdown values appear here...',
             type='text',
             value="{ '$and': [{'nelements': {'$gte': 1, '$lte': 8}}] }",
             style={
@@ -104,10 +106,9 @@ def layout():
         html.Div(
             id=ids["table_output"],
             children='No table yet.',
-            )
+        ),
     ])
 
 
-callback_manager = CallbackManager()
-callback_manager.generate_all_io(component_manager)
-callback_manager.attach_callbacks(app)
+callback_manager = CallbackManager(app, component_manager)
+callback_manager.attach_callbacks()

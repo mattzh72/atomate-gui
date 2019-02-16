@@ -6,16 +6,12 @@ import dash_html_components as html
 class RadioBoolean(BaseComponent):
     type = 'radio'
 
-    def __init__(self, name, active=False):
-        BaseComponent.__init__(self, name, active)
+    def __init__(self, name):
+        BaseComponent.__init__(self, name, False, None)
         self.truthy_val = True
         self.falsey_val = False
 
     def generate_component(self):
-        display = 'none'
-        if self.active:
-            display = 'block'
-
         return html.Div(
             children=[dcc.RadioItems(
                 id=self.name,
@@ -36,13 +32,20 @@ class RadioBoolean(BaseComponent):
             ],
             id=self.parent_name,
             style={
-                'display': display,
                 'width': '80%',
                 'margin-left': '10%',
                 'margin-top': '10px',
                 'margin-bottom': '10px',
             }
         )
+
+    def __str__(self):
+        return str({
+            'type': RadioBoolean.type,
+            'name': self.name,
+            'truth': self.truthy_val,
+            'false': self.falsey_val,
+        })
 
 
 

@@ -1,8 +1,8 @@
 from app import app, collection
 from components.table import CollectionTable
-import crystal_toolkit as ct
+# import crystal_toolkit as ct
 import dash_html_components as html
-from pymatgen import Structure, Lattice
+# from pymatgen import Structure
 
 
 def layout(pathname):
@@ -20,20 +20,20 @@ def layout(pathname):
                     'margin-top': '20px',
                     'text-align': 'center'}
             ),
-            generate_visual(material_id, entry),
+            # generate_visual(material_id, entry),
             generate_data_table(entry)
         ])
 
 
-def generate_visual(material_id, entry):
-    ct.register_app(app)
-    structure = Structure.from_dict(entry["structure"])
-    struct_component = ct.StructureMoleculeComponent(structure, id=material_id)
-
-    return html.Div([
-        ct.MPComponent.all_app_stores(),
-        struct_component.standard_layout
-    ])
+# def generate_visual(material_id, entry):
+#     ct.register_app(app)
+#     structure = Structure.from_dict(entry["structure"])
+#     struct_component = ct.StructureMoleculeComponent(structure, id=material_id)
+#
+#     return html.Div([
+#         ct.MPComponent.all_app_stores(),
+#         struct_component.standard_layout
+#     ])
 
 
 def generate_data_table(entry):

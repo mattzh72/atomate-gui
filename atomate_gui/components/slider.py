@@ -7,8 +7,8 @@ import math
 class Slider(BaseComponent):
     type = 'slider'
 
-    def __init__(self, name, min_val=0, max_val=10, step=1, active=False):
-        BaseComponent.__init__(self, name, active)
+    def __init__(self, name, min_val=0, max_val=10, step=1):
+        BaseComponent.__init__(self, name, [min_val, max_val], [min_val, max_val])
         self.min = min_val
         self.max = max_val
         self.step = step
@@ -35,25 +35,6 @@ class Slider(BaseComponent):
             self.marks[mark] = round(mark, 4)
             mark += mark_step
 
-    def auto_scale_range(self, collection):
-        max_val, min_val = float('-inf'), float('inf')
-
-        for post in collection.find():
-            try:
-                val = eval("post" + self.name)
-
-                if val:
-                    if val > max_val:
-                        max_val = val
-
-                    if val < min_val:
-                        min_val = val
-            except KeyError as e:
-                pass
-
-        self.min = min_val
-        self.max = max_val
-
     def auto_scale_step(self, collection):
         sample_field = eval("collection.find_one()" + self.name)
         if isinstance(sample_field, float):
@@ -62,10 +43,6 @@ class Slider(BaseComponent):
             self.step = 1
 
     def generate_component(self):
-        display = 'none'
-        if self.active:
-            display = 'block'
-
         return html.Div(
             children=[dcc.RangeSlider(
                 id=self.name,
@@ -74,7 +51,7 @@ class Slider(BaseComponent):
                 min=self.min,
                 max=self.max,
                 step=self.step,
-                value=[self.min, self.max],
+                value=self.value,
                 marks=self.marks,
             ),
                 html.Div(
@@ -88,13 +65,22 @@ class Slider(BaseComponent):
             ],
             id=self.parent_name,
             style={
-                'display': display,
                 'width': '80%',
                 'margin-left': '10%',
                 'margin-top': '10px',
                 'margin-bottom': '10px',
             }
         )
+
+    def __str__(self):
+        return str({
+            'type': Slider.type,
+            'name': self.name,
+            'min_val': self.min,
+            'max_val': self.max,
+            'step': self.step,
+            'marks': self.marks
+        })
 
 
 

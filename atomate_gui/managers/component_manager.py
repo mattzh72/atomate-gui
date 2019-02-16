@@ -6,54 +6,55 @@ from components.radio import RadioBoolean
 
 class ComponentManager:
     def __init__(self):
-        self.components = []
+        self.components = {}
         self.dropdown = ComponentDropdown()
+        self.active_components = {}
 
     def add_components(self, collection_manager):
         collection_manager.set_metadata()
 
-        for data_type, fields in collection_manager.metadata.items():
-            for name, value in fields.items():
-                component = None
+        for item in collection_manager.metadata:
+            component = None
+            name = item['name']
 
-                if data_type == 'nums':
-                    component = Slider(name, value[0], value[1])
-                    component.auto_scale_step(collection_manager.collection)
-                    component.auto_generate_marks()
-                elif data_type == 'strings':
-                    component = Input(name)
-                elif data_type == 'bools':
-                    component = RadioBoolean(name)
+            if item['type'] == int:
+                component = Slider(name, item['min'], item['max'])
+                component.auto_generate_marks()
 
-                if component:
-                    self.components.append(component)
+            if item['type'] == bool:
+                component = Input(name)
 
-            self.dropdown.add_options(self.components)
+            if item['type'] == str:
+                component = RadioBoolean(name)
 
-    def update_activity(self, active_fields):
-        for component in self.components:
-            if component.name in active_fields:
-                component.active = True
-            else:
-                component.active = False
+            if component:
+                self.components[name] = component
 
-    def report_activity(self):
-        activity = []
-        for component in self.components:
-            activity.append(component.active)
+        self.dropdown.add_options(self.components)
 
-        return activity
+    def activate_component(self, name):
+        self.active_components[name] = self.components[name]
 
-    def remove_all_components(self):
-        self.components = []
+    def deactivate_component(self, name):
+        self.active_components.pop(name)
+        self.clear_component_cache(name)
 
-    def generate_components(self):
-        html_components = []
+    def cache_component(self, name, value):
+        self.components[name].value = value
 
-        for component in self.components:
-            html_components.append(component.generate_component())
+        return "{0} for {1}".format(value, name)
 
-        return html_components
+    def clear_component_cache(self, name):
+        if self.components[name].default:
+            self.components[name].value = self.components[name].default
+
+    def generate_active_components(self):
+        children = []
+        for component in self.active_components.values():
+            if component:
+                children.append(component.generate_component())
+
+        return children
 
 
 

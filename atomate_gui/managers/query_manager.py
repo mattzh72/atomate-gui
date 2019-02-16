@@ -13,20 +13,19 @@ class QueryManager:
             "hidden": "@HIDDEN",
         }
 
-    def create_query(self, names, values, styles):
+    def create_query(self, names, values):
         queries = []
 
-        for name, value, style in zip(names, values, styles):
-            if style['display'] == 'block':
-                m_name = name.replace("']['", ".").replace("['", "").replace("']", "")
-                if value is None:
-                    queries.append(ast.literal_eval(self.query_templates["exists"].format(m_name, value)))
-                elif isinstance(value, list):
-                    queries.append(ast.literal_eval(self.query_templates["slider"].format(m_name, value[0], value[1])))
-                elif isinstance(value, str):
-                    queries.append(ast.literal_eval(self.query_templates["input"].format(m_name, value)))
-                elif isinstance(value, bool):
-                    queries.append(ast.literal_eval(self.query_templates["radio"].format(m_name, value)))
+        for name, value in zip(names, values):
+            m_name = name.replace("']['", ".").replace("['", "").replace("']", "")
+            if value is None:
+                queries.append(ast.literal_eval(self.query_templates["exists"].format(m_name, value)))
+            elif isinstance(value, list):
+                queries.append(ast.literal_eval(self.query_templates["slider"].format(m_name, value[0], value[1])))
+            elif isinstance(value, str):
+                queries.append(ast.literal_eval(self.query_templates["input"].format(m_name, value)))
+            elif isinstance(value, bool):
+                queries.append(ast.literal_eval(self.query_templates["radio"].format(m_name, value)))
 
         return "{{ '$and': {0} }}".format(queries)
 

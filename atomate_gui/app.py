@@ -3,12 +3,12 @@ from pymongo import MongoClient
 
 # Global ID HTML values
 ids = {
-    "query_input": "query-input",
-    "fields_input": "field_input",
-    "textarea_output": "textarea_output",
-    "table_output": "table-output",
-    "component_container": "component-container",
-    "component_dropdown": "component-dropdown",
+    "query_input": "q-i",
+    "fields_input": "f-i",
+    "textarea_output": "ta-o",
+    "table_output": "t-o",
+    "components": "c-c",
+    "dropdown": "c-d",
 }
 
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']

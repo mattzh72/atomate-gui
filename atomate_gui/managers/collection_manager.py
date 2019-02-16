@@ -1,14 +1,10 @@
 import collections
 
+
 class CollectionManager:
     def __init__(self, collection):
         self.collection = collection
-        self.metadata = {
-            'bools': {},
-            'nums': {},
-            'lists': {},
-            'strings': {},
-        }
+        self.metadata = []
 
     def flatten_collection(self, d, parent_key='', sep="']['"):
         items = []
@@ -28,26 +24,40 @@ class CollectionManager:
                 name = "['" + name + "']"
 
                 if isinstance(value, (float, int)) and not isinstance(value, bool):
-                    self.metadata['nums'][name] = value
+                    self.metadata.append({
+                        'name': name,
+                        'type': int,
+                    })
                 elif isinstance(value, bool):
-                    self.metadata['bools'][name] = value
+                    self.metadata.append({
+                        'name': name,
+                        'type': bool,
+                    })
                 elif isinstance(value, str):
-                    self.metadata['strings'][name] = value
-                elif isinstance(value, list):
-                    self.metadata['lists'][name] = value
+                    self.metadata.append({
+                        'name': name,
+                        'type': str,
+                    })
 
-        self.metadata['nums'] = dict.fromkeys(self.metadata['nums'].keys(), [float('inf'), float('-inf')])
+        self.detect_ranges()
 
+    def detect_ranges(self):
         for post in self.collection.find():
-            for name, value in self.metadata['nums'].items():
-                try:
-                    current_val = eval("post" + name)
+            for item in self.metadata:
+                if item['type'] is int:
+                    try:
+                        current_val = eval("post" + item['name'])
+                        if current_val:
+                            if 'min' in item:
+                                item['min'] = min(current_val, item['min'])
+                            else:
+                                item['min'] = float('inf')
 
-                    if current_val:
-                        if current_val > value[1]:
-                            self.metadata['nums'][name] = [value[0], current_val]
-                        elif current_val < value[0]:
-                            self.metadata['nums'][name] = [current_val, value[1]]
+                            if 'max' in item:
+                                item['max'] = max(current_val, item['max'])
+                            else:
+                                item['max'] = float('-inf')
+                    except KeyError:
+                        pass
 
-                except KeyError:
-                    pass
+
