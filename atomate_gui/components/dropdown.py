@@ -25,6 +25,7 @@ class ComponentDropdown:
     def clear_options(self):
         self.options = []
 
+    @staticmethod
     def create_callback(self, vals, c_manager):
         for name in list(c_manager.active_components.keys()):
             if name not in vals:

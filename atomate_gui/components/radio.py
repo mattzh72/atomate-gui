@@ -21,14 +21,7 @@ class RadioBoolean(BaseComponent):
                     {'label': 'False', 'value': self.falsey_val},
                 ],
             ),
-                html.Div(
-                    id=self.output_div_name,
-                    style={
-                        'margin-top': '20px',
-                        'margin-bottom': '10px',
-                        'font-size': '10px',
-                    }
-                )
+                self.generate_label_div()
             ],
             id=self.parent_name,
             style={

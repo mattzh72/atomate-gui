@@ -13,7 +13,7 @@ class CallbackManager:
     def attach_callbacks(self):
         self.generate_output_io()
         self.generate_dd_io()
-        self.generate_query_io()
+        # self.generate_query_io()
         self.generate_table_io()
 
         for callback_data in self.ios:
@@ -25,12 +25,13 @@ class CallbackManager:
     def generate_output_io(self):
         for c_name in self.c_manager.components.keys():
             self.ios.append({
-                "output": Output(c_name+'-output-container', 'children'),
+                "output": Output(c_name+'-label', 'children'),
                 "inputs": [Input(c_name, 'id'), Input(c_name, 'value')],
                 "func": lambda name, val: self.c_manager.cache_component(name, val),
             })
 
     def generate_query_io(self):
+        print("printing queries")
         inputs = []
 
         for c_name in self.c_manager.components.keys():

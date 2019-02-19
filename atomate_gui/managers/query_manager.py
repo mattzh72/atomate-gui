@@ -14,6 +14,7 @@ class QueryManager:
         }
 
     def create_query(self, names, values):
+        print("printing queries 2")
         queries = []
 
         for name, value in zip(names, values):
