@@ -15,6 +15,11 @@ component_manager.add_components(collection_manager)
 
 def layout():
     return html.Div(children=[
+    #     html.Div(
+    #         id='hidden-outputs',
+    #         children=component_manager.generate_hidden_outputs()
+    #     ),
+
         html.H1(
             children='Materialize Search Engine',
             style={

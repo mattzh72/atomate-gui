@@ -5,11 +5,15 @@ import dash_html_components as html
 
 class RadioBoolean(BaseComponent):
     type = 'radio'
+    query = "{{'{0}': {1} }}"
 
     def __init__(self, name):
         BaseComponent.__init__(self, name, False, None)
         self.truthy_val = True
         self.falsey_val = False
+
+    def get_query(self):
+        return RadioBoolean.query.format(self.name, self.value)
 
     def generate_component(self):
         return html.Div(

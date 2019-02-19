@@ -5,10 +5,14 @@ import dash_html_components as html
 
 class Input(BaseComponent):
     type = 'input'
+    query = "{{'{0}': {{'$regex' : '.*{1}.*'}} }}"
 
     def __init__(self, name):
         BaseComponent.__init__(self, name, "", "")
         self.placeholder = 'Enter a value for ' + self.name
+
+    def get_query(self):
+        return Input.query.format(self.name, self.value)
 
     def generate_component(self):
         return html.Div(

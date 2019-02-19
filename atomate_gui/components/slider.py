@@ -6,6 +6,7 @@ import math
 
 class Slider(BaseComponent):
     type = 'slider'
+    query = "{{'{0}': {{'$gte': {1}, '$lte': {2}}} }}"
 
     def __init__(self, name, min_val=0, max_val=10, step=1):
         BaseComponent.__init__(self, name, [min_val, max_val], [min_val, max_val])
@@ -13,6 +14,9 @@ class Slider(BaseComponent):
         self.max = max_val
         self.step = step
         self.marks = {}
+
+    def get_query(self):
+        return Slider.query.format(self.name, self.value[0], self.value[1])
 
     def auto_scale(self, collection):
         self.auto_scale_range(collection)

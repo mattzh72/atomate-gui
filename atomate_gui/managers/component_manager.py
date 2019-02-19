@@ -32,19 +32,35 @@ class ComponentManager:
 
         self.dropdown.add_options(self.components)
 
+    def merge_queries(self):
+        queries = []
+
+        for component in self.active_components.values():
+            queries.append(component.get_query())
+
+        return "{{ '$and': {0} }}".format(queries)
+
+    def generate_hidden_outputs(self):
+        children = []
+
+        for component in self.components:
+            children.append(component.generate_output_div)
+
+        return children
+
     def activate_component(self, name):
         self.active_components[name] = self.components[name]
 
     def deactivate_component(self, name):
         self.active_components.pop(name)
-        self.clear_component_cache(name)
+        self.clear_cache(name)
 
     def cache_component(self, name, value):
         self.components[name].value = value
 
         return "{0} for {1}".format(value, name)
 
-    def clear_component_cache(self, name):
+    def clear_cache(self, name):
         if self.components[name].default:
             self.components[name].value = self.components[name].default
 

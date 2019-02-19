@@ -2,6 +2,7 @@ import dash_html_components as html
 
 class BaseComponent:
     type = 'base'
+    query = "{{ '{0}': {{ '$exists': 'true' }} }}"
 
     def __init__(self, name, value, default=None):
         self.name = name
@@ -13,6 +14,9 @@ class BaseComponent:
         self.label = self.name + '-label'
         self.output = self.name + '-output'
         self.parent_name = self.name + '-parent-container'
+
+    def get_query(self):
+        return BaseComponent.query.format(self.name)
 
     def generate_label_div(self):
         return html.Div(

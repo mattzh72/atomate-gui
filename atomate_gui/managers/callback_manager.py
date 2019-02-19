@@ -11,9 +11,11 @@ class CallbackManager:
         self.app = app
 
     def attach_callbacks(self):
-        self.generate_output_io()
+        for c_name in self.c_manager.components.keys():
+            self.generate_label_io(c_name)
+            self.generate_query_io(c_name)
+
         self.generate_dd_io()
-        # self.generate_query_io()
         self.generate_table_io()
 
         for callback_data in self.ios:
@@ -22,26 +24,18 @@ class CallbackManager:
                 callback_data["inputs"]
             )(callback_data["func"])
 
-    def generate_output_io(self):
-        for c_name in self.c_manager.components.keys():
-            self.ios.append({
-                "output": Output(c_name+'-label', 'children'),
-                "inputs": [Input(c_name, 'id'), Input(c_name, 'value')],
-                "func": lambda name, val: self.c_manager.cache_component(name, val),
-            })
+    def generate_label_io(self, c_name):
+        self.ios.append({
+            "output": Output(c_name+'-label', 'children'),
+            "inputs": [Input(c_name, 'id'), Input(c_name, 'value')],
+            "func": lambda name, val: self.c_manager.cache_component(name, val),
+        })
 
-    def generate_query_io(self):
-        print("printing queries")
-        inputs = []
-
-        for c_name in self.c_manager.components.keys():
-            inputs.append(Input(c_name, 'id'))
-            inputs.append(Input(c_name, 'value'))
-
+    def generate_query_io(self, c_name):
         self.ios.append({
             "output": Output(ids["query_input"], 'value'),
-            "inputs": inputs,
-            "func": lambda *args: QueryManager().create_query(args[::2], args[1::2])
+            "inputs": [Input(c_name, 'value')],
+            "func": lambda val: self.c_manager.merge_queries(),
         })
 
     def generate_table_io(self):
