@@ -5,7 +5,6 @@ import dash_html_components as html
 
 class RadioBoolean(BaseComponent):
     type = 'radio'
-    query = "{{'{0}': {1} }}"
 
     def __init__(self, name):
         BaseComponent.__init__(self, name, False, None)
@@ -13,28 +12,30 @@ class RadioBoolean(BaseComponent):
         self.falsey_val = False
 
     def get_query(self):
-        return RadioBoolean.query.format(self.name, self.value)
+        return {self.mongo: self.value}
 
     def generate_component(self):
-        return html.Div(
-            children=[dcc.RadioItems(
-                id=self.name,
-                className=self.class_name,
-                options=[
-                    {'label': 'True', 'value': self.truthy_val},
-                    {'label': 'False', 'value': self.falsey_val},
-                ],
-            ),
-                self.generate_label_div()
-            ],
-            id=self.parent_name,
+        children = [html.Div(
+            children=[
+                self.generate_label_div(),
+                dcc.RadioItems(
+                    id=self.name,
+                    options=[
+                        {'label': 'True', 'value': self.truthy_val},
+                        {'label': 'False', 'value': self.falsey_val},
+                    ],
+                )],
+            id=self.parent,
             style={
                 'width': '80%',
-                'margin-left': '10%',
-                'margin-top': '10px',
-                'margin-bottom': '10px',
+                'margin-left': '10%'
             }
-        )
+        )]
+
+        return self.generate_wrapper(children)
+
+    def get_label(self):
+        return '{0} is {1}'.format(self.mongo, self.value)
 
     def __str__(self):
         return str({

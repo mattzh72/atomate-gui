@@ -8,7 +8,9 @@ ids = {
     "textarea_output": "ta-o",
     "table_output": "t-o",
     "components": "c-c",
-    "dropdown": "c-d",
+    "query_dropdown": "d-q",
+    "field_dropdown": "d-f",
+    "btn": "s-b",
 }
 
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']

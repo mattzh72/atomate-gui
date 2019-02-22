@@ -81,7 +81,7 @@ class CollectionTable:
                 'width': '50%',
                 'margin-bottom': '20px',
                 'text-align': 'center',
-                'margin-left': '25%'
+                'margin-left': '25%',
             }
         )
 

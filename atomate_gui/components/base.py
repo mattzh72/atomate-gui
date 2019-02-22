@@ -9,31 +9,39 @@ class BaseComponent:
         self.value = value
         self.default = default
 
-        self.class_name = self.name + "-" + self.type
-        self.mongo_name = name.replace("']['", ".").replace("['", "").replace("']", "")
+        self.mongo = name.replace("']['", ".").replace("['", "").replace("']", "")
         self.label = self.name + '-label'
         self.output = self.name + '-output'
-        self.parent_name = self.name + '-parent-container'
+        self.parent = self.name + '-parent-container'
+        self.wrapper = self.name + '-wrapper'
 
     def get_query(self):
-        return BaseComponent.query.format(self.name)
+        return {self.m_name: {'$exists': 'true'}}
 
     def generate_label_div(self):
         return html.Div(
             id=self.label,
             style={
-                'margin-top': '20px',
-                'margin-bottom': '10px',
-                'font-size': '10px',
+                'margin-top': '10px',
+                'margin-bottom': '5px',
+                'font-size': '12px',
             }
         )
 
-    def generate_output_div(self, children=None):
+    def generate_wrapper(self, children):
         return html.Div(
-            id=self.output,
+            id=self.wrapper,
             children=children,
             style={
-                'display': 'None'
+                'border': '1px solid #D3D3D3',
+                'border-radius': '5px',
+                'height': '90px',
+                'width': '35%',
+                'max-width': '300px',
+                'margin': '5px',
+                'padding-top': '5px',
+                'padding-bottom': '5px',
+                'display': 'inline-block'
             }
         )
 

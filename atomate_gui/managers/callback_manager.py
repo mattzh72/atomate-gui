@@ -1,6 +1,5 @@
 from dash.dependencies import Input, Output
 from components.table import CollectionTable
-from managers.query_manager import QueryManager
 from app import ids
 
 
@@ -13,10 +12,10 @@ class CallbackManager:
     def attach_callbacks(self):
         for c_name in self.c_manager.components.keys():
             self.generate_label_io(c_name)
-            self.generate_query_io(c_name)
 
         self.generate_dd_io()
         self.generate_table_io()
+        self.generate_btn_io()
 
         for callback_data in self.ios:
             self.app.callback(
@@ -24,18 +23,18 @@ class CallbackManager:
                 callback_data["inputs"]
             )(callback_data["func"])
 
+    def generate_btn_io(self):
+        self.ios.append({
+            "output": Output(ids["query_input"], 'value'),
+            "inputs": [Input(ids["btn"], 'n_clicks')],
+            "func": lambda n_clicks: self.c_manager.merge_queries(),
+        })
+
     def generate_label_io(self, c_name):
         self.ios.append({
             "output": Output(c_name+'-label', 'children'),
             "inputs": [Input(c_name, 'id'), Input(c_name, 'value')],
             "func": lambda name, val: self.c_manager.cache_component(name, val),
-        })
-
-    def generate_query_io(self, c_name):
-        self.ios.append({
-            "output": Output(ids["query_input"], 'value'),
-            "inputs": [Input(c_name, 'value')],
-            "func": lambda val: self.c_manager.merge_queries(),
         })
 
     def generate_table_io(self):
@@ -48,6 +47,14 @@ class CallbackManager:
     def generate_dd_io(self):
         self.ios.append({
             "output": Output(ids["components"], 'children'),
-            "inputs": [Input(ids["dropdown"], 'value')],
-            "func": lambda values: self.c_manager.dropdown.create_callback(values, self.c_manager),
+            "inputs": [Input(ids["query_dropdown"], 'value')],
+            "func": lambda values: self.c_manager.update(values),
         })
+
+        self.ios.append({
+            "output": Output(ids["fields_input"], 'value'),
+            "inputs": [Input(ids["field_dropdown"], 'value')],
+            "func": lambda values: self.c_manager.specify_fields(values),
+        })
+
+
