@@ -33,15 +33,13 @@ class BaseComponent:
             id=self.wrapper,
             children=children,
             style={
-                'border': '1px solid #D3D3D3',
+                'border': '1px dotted rgba(0,0,0,0.22)',
                 'border-radius': '5px',
+                # 'box-shadow': '0 1px 3px rgba(0,0,0,0.10), 0 1px 2px rgba(0,0,0,0.22)',
                 'height': '90px',
-                'width': '35%',
-                'max-width': '300px',
-                'margin': '5px',
+                'margin': '10px',
                 'padding-top': '5px',
                 'padding-bottom': '5px',
-                'display': 'inline-block'
             }
         )
 

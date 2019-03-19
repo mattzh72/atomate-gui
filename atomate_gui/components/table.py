@@ -16,7 +16,7 @@ class CollectionTable:
         except Exception:
             return "Not a valid query."
 
-    def query_data(self, query, fields, row_label="chemsys", unravel=False):
+    def query_data(self, query, fields, row_label="chemsys", unravel=True):
         mat_structs = {}
         nested = False
 
@@ -63,8 +63,10 @@ class CollectionTable:
         return html.Table(
             table_output,
             style={
-                'width': '75%',
-                'margin': '0 auto',
+                'width': '90%',
+                'margin-left': '5%',
+                'margin-top': '10px',
+                'height': '80%',
                 'text-align': 'center',
             }
         )

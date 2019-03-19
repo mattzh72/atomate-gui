@@ -30,89 +30,117 @@ field_values = [
 
 def layout():
     return html.Div(children=[
-        html.H1(
-            children='Materialize Search Engine',
-            style={
-                'width': '100%',
-                'margin-bottom': '70px',
-                'margin-top': '20px',
-                'text-align': 'center'}
+        html.Div(children=[
+            html.H1(
+                children='Materialize Searcher',
+                style={
+                    'width': '90%',
+                    'margin-left': '5%',
+                    'margin-bottom': '50px',
+                    'margin-top': '20px',
+                    'text-align': 'center',
+                    'font-size': '40px',
+                }
             ),
 
-        html.Div(
-            children=[component_manager.query_dropdown.generate_component(ids["query_dropdown"], query_values)],
-            style={
-                'width': '50%',
-                'margin-left': '25%',
+            html.Button('Search', id=ids["btn"], style={
+                'width': '40%',
                 'margin-bottom': '20px',
-            }
-        ),
+            }),
 
-        html.Div(
-            children=[component_manager.field_dropdown.generate_component(ids["field_dropdown"], field_values)],
-            style={
-                'width': '50%',
-                'margin-left': '25%',
-                'margin-bottom': '20px',
-            }
-        ),
+            html.Div(
+                id='query_components',
+                children=[html.Div(
+                    id=ids["components"],
+                    style={
+                        'margin-bottom': '10px',
+                    }
+                )],
+                style={
+                    'width': '90%',
+                    'margin-left': '5%',
+                    'margin-bottom': '20px',
+                    'text-align': 'center',
+                }
+            ),
 
-        html.Div(
-            id='query_components',
-            children=[html.Div(
-                        id=ids["components"],
-                        children=[],
-                        style={
-                            'margin-bottom': '10px',
-                        }
-                    ),
-                    html.Button('Search', id=ids["btn"], style={
-                            'margin-bottom': '20px',
-                        }),
-                ],
+            dcc.Input(
+                id=ids["query_input"],
+                placeholder='',
+                type='text',
+                value='',
+                style={
+                    'width': '60%',
+                    'margin-bottom': '10px',
+                    'margin-left': '20%',
+                    'display': 'none',
+                },
+            ),
+
+            dcc.Input(
+                id=ids["fields_input"],
+                placeholder='Put the fields you want to display here...',
+                type='text',
+                value="",
+                style={
+                    'width': '60%',
+                    'margin-bottom': '20px',
+                    'margin-left': '20%',
+                    'display': 'none',
+                },
+            ),
+        ],
+            id="side-bar",
             style={
-                'width': '90%',
-                'margin-left': '5%',
+                'width': '400px',
+                'height': 'calc(100% - 40px)',
+                'margin-top': '20px',
                 'margin-bottom': '20px',
+                'margin-left': '20px',
                 'text-align': 'center',
-                # 'border': '1px solid #D3D3D3',
-                # 'border-radius': '5px',
+                'border-radius': '5px',
+                'box-shadow': '0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.24)',
+                'overflow': 'scroll',
+                'position': 'fixed',
             }
-        ),
-
-        dcc.Input(
-            id=ids["query_input"],
-            placeholder='',
-            type='text',
-            value='',
-            style={
-                'width': '60%',
-                'margin-bottom': '10px',
-                'margin-left': '20%',
-                'display': 'none',
-            },
-        ),
-
-        dcc.Input(
-            id=ids["fields_input"],
-            placeholder='Put the fields you want to display here...',
-            type='text',
-            value="",
-            style={
-                'width': '60%',
-                'margin-bottom': '20px',
-                'margin-left': '20%',
-                'display': 'none',
-            },
         ),
 
         html.Div(
-            id=ids["table_output"],
-            children='No table yet.',
+            children=[
+                html.Div(
+                    children=[component_manager.query_dropdown.generate_component(ids["query_dropdown"], query_values)],
+                    style={
+                        'width': '80%',
+                        'margin-bottom': '10px',
+                    }
+                ),
+
+                html.Div(
+                    children=[component_manager.field_dropdown.generate_component(ids["field_dropdown"], field_values)],
+                    style={
+                        'width': '80%',
+                        'margin-bottom': '40px',
+                    }
+                ),
+
+                html.Div(
+                    id=ids["table_output"],
+                    children='No table yet.',
+                    style={
+                        'width': '80%',
+                        'text-align': 'center',
+                        # 'border': '1px solid #D3D3D3',
+                        # 'border-radius': '5px',
+                    }
+                )],
+
             style={
-                'padding': '20px'
+                'padding-top': '50px',
+                'margin-left': 'calc(400px + 0.1 * (100% - 400px))',
+                'height': '100vh',
+                'width': 'calc(100% - 400px)',
             }
-        ),
+        )
     ])
 
 

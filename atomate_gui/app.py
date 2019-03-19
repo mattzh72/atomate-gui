@@ -13,7 +13,7 @@ ids = {
     "btn": "s-b",
 }
 
-external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
+external_stylesheets = ['https://codepen.io/mattzh1314/pen/LajLog.css']
 
 app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 server = app.server
