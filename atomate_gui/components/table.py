@@ -51,7 +51,7 @@ class CollectionTable:
         return dict(items)
 
     def generate_search_table(self, max_rows=20):
-        row_range = range(min(len(self.data_frame), max_rows))
+        row_range = range(len(self.data_frame))
 
         header = [html.Tr([html.Th("")] + [html.Th(col) for col in self.data_frame.columns])]
         body = [html.Tr(
