@@ -15,7 +15,7 @@ ids = {
 
 external_stylesheets = ['https://codepen.io/mattzh1314/pen/LajLog.css']
 
-app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
+app = dash.Dash(__name__)
 server = app.server
 app.config['suppress_callback_exceptions'] = True
 

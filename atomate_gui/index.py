@@ -7,25 +7,28 @@ import crystal_toolkit.components as ct
 from pymatgen import Structure
 
 from app import app, collection
-from apps import search, data
-
+from apps import search
+from apps.data_app import DataApp
 
 ct.register_app(app)
 struct_component = ct.StructureMoleculeComponent()
 struct_layout = html.Div([
-            struct_component.standard_layout,
-            struct_component.all_layouts["title"],
-            struct_component.all_layouts["legend"],
-            struct_component.all_layouts["options"],
-            struct_component.all_layouts["screenshot"]
-])
-
+    html.Div(children=struct_component.standard_layout),
+    html.Div([
+        struct_component.all_layouts["title"],
+        struct_component.all_layouts["legend"],
+        struct_component.all_layouts["options"],
+        struct_component.all_layouts["screenshot"]],
+    )],
+    id='visualizer',
+)
 
 app.layout = html.Div([
     dcc.Location(id='url', refresh=False),
     ct.MPComponent.all_app_stores(),
-    html.Div(id='page-content')
-])
+    html.Div(id='page-content'),
+    html.Div(struct_layout)
+    ])
 
 
 @app.callback(Output('page-content', 'children'),
@@ -34,12 +37,24 @@ def display_page(pathname):
     if not pathname or len(pathname) <= 1:
         raise PreventUpdate
     elif pathname == '/search':
-        return html.Div(search.layout(),
-                        html.Div(struct_layout, style={"display": "none"}))
+        return html.Div(search.layout())
     else:
-        return html.Div(struct_layout, style={"display": "block"})
+        return html.Div(DataApp.serve_layout(pathname))
 
 
+# This is a work-around hack to show/hide the viewer appropriately.
+@app.callback(Output('visualizer', 'style'),
+              [Input('url', 'pathname')])
+def display_page(pathname):
+    if not pathname or len(pathname) <= 1:
+        raise PreventUpdate
+    elif pathname == '/search':
+        return {"display": "none"}
+    else:
+        return {"display": "block"}
+
+
+# This is to update the viewer with the appropriate material.
 @app.callback(
     Output(struct_component.id(), "data"),
     [Input('url', 'pathname')]

@@ -4,6 +4,7 @@ import dash_html_components as html
 from managers.component_manager import ComponentManager
 from managers.callback_manager import CallbackManager
 from managers.collection_manager import CollectionManager
+from managers.query_manager import QueryManager
 
 from app import app, collection, ids
 
@@ -12,38 +13,20 @@ collection_manager = CollectionManager(collection)
 component_manager = ComponentManager()
 component_manager.add_components(collection_manager)
 
-query_values = [
-    "['nelements']",
-    "['material_id']",
-    "['spacegroup']['number']",
-    "['stability']['e_above_hull']",
-    "['bandstructure']['is_gap_direct']",
-    "['chemsys']"
-]
-
-field_values = [
-    "['chemsys']",
-    "['bandgap']",
-    "['material_id']"
-]
+query_manager = QueryManager()
+query_values = QueryManager.default_query
+field_values = QueryManager.default_fields
 
 
 def layout():
     return html.Div(children=[
         html.Div(children=[
             html.H1(
+                id='header',
                 children='Materialize Searcher',
-                style={
-                    'width': '90%',
-                    'margin-left': '5%',
-                    'margin-bottom': '50px',
-                    'margin-top': '20px',
-                    'text-align': 'center',
-                    'font-size': '40px',
-                }
             ),
 
-            html.Button('Search', id=ids["btn"], style={
+            html.Button('SEARCH', id=ids["btn"], style={
                 'width': '40%',
                 'margin-bottom': '20px',
             }),
@@ -124,6 +107,37 @@ def layout():
                 ),
 
                 html.Div(
+                    id='table-selectors',
+                    children=[
+                        html.Div(
+                            id='table-row-selector',
+                            children=[
+                                dcc.Dropdown(
+                                    id='table-row-dropdown',
+                                    options=[
+                                        {'label': '20', 'value': 20},
+                                        {'label': '50', 'value': 50},
+                                        {'label': '100', 'value': 100}
+                                    ],
+                                    value='50',
+                                    clearable=False
+                                )],
+                        ),
+
+                        html.Div(
+                            id='table-page-selector',
+                            children=[
+                                html.Button('<', id='table-backward'),
+                                html.Button('>', id='table-forward'),
+                                html.Div('', id='table-page-index')
+                            ]
+                        )
+
+                    ]
+
+                ),
+
+                html.Div(
                     id=ids["table_output"],
                     children='No table yet.',
                     style={
@@ -144,5 +158,5 @@ def layout():
     ])
 
 
-callback_manager = CallbackManager(app, component_manager)
+callback_manager = CallbackManager(app, component_manager, query_manager)
 callback_manager.attach_callbacks()

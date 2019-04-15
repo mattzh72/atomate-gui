@@ -1,12 +1,12 @@
 from dash.dependencies import Input, Output
-from components.table import CollectionTable
 from app import ids
 
 
 class CallbackManager:
-    def __init__(self, app, component_manager):
+    def __init__(self, app, component_manager, query_manager):
         self.ios = []
         self.c_manager = component_manager
+        self.q_manager = query_manager
         self.app = app
 
     def attach_callbacks(self):
@@ -27,7 +27,13 @@ class CallbackManager:
         self.ios.append({
             "output": Output(ids["query_input"], 'value'),
             "inputs": [Input(ids["btn"], 'n_clicks')],
-            "func": lambda n_clicks: self.c_manager.merge_queries(),
+            "func": lambda n1: self.c_manager.merge_queries(),
+        })
+
+        self.ios.append({
+            "output": Output('table-page-index', 'children'),
+            "inputs": [Input(ids["table_output"], 'children')],
+            "func": lambda children: self.q_manager.create_message(),
         })
 
     def generate_label_io(self, c_name):
@@ -40,8 +46,13 @@ class CallbackManager:
     def generate_table_io(self):
         self.ios.append({
             "output": Output(ids["table_output"], 'children'),
-            "inputs": [Input(ids["query_input"], 'value'), Input(ids["fields_input"], 'value')],
-            "func": lambda query, fields: CollectionTable().create_callback(query, fields),
+            "inputs": [Input(ids["query_input"], 'value'),
+                       Input(ids["fields_input"], 'value'),
+                       Input('table-row-dropdown', 'value'),
+                       Input('table-forward', 'n_clicks_timestamp'),
+                       Input('table-backward', 'n_clicks_timestamp'),
+                       Input(ids["btn"], 'n_clicks_timestamp')],
+            "func": lambda query, fields, rpp, forward_time, backward_time, search_time: self.q_manager.create_table(query, fields, rpp, forward_time, backward_time, search_time),
         })
 
     def generate_dd_io(self):

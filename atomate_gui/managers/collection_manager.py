@@ -5,6 +5,7 @@ class CollectionManager:
     def __init__(self, collection):
         self.collection = collection
         self.metadata = []
+        self.nested = False
 
     def flatten_collection(self, d, parent_key='', sep="']['"):
         items = []
@@ -21,6 +22,11 @@ class CollectionManager:
 
         for name, value in fields.items():
             if name[0] != "_":
+
+                # this is to check if there's any nested items (dicts of dict etc) in the collection
+                if isinstance(value, dict):
+                    self.nested = True
+
                 name = "['" + name + "']"
 
                 if isinstance(value, (float, int)) and not isinstance(value, bool):
