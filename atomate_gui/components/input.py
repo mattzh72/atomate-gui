@@ -14,21 +14,18 @@ class Input(BaseComponent):
         return {self.mongo: {'$regex': '.*' + self.value + '.*'}}
 
     def generate_component(self):
-        children = [
-            self.generate_label_div(),
-            html.Div(
-                children=[dcc.Input(
-                    id=self.name,
-                    placeholder=self.placeholder,
-                    type='text',
-                    value=self.value,
-                )],
+        children = html.Div(
+                children=[
+                    self.generate_label_div(),
+                    dcc.Input(
+                        id=self.name,
+                        placeholder=self.placeholder,
+                        type='text',
+                        value=self.value,
+                    )],
                 id=self.parent,
-                style={
-                    'width': '80%',
-                    'margin-left': '10%'
-                }
-            )]
+                className='input-component'
+            )
 
         return self.generate_wrapper(children)
 

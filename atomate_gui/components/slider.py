@@ -67,7 +67,7 @@ class Slider(BaseComponent):
             self.step = 1
 
     def generate_component(self):
-        children = [html.Div(
+        children = html.Div(
             children=[
                 self.generate_label_div(),
                 dcc.RangeSlider(
@@ -80,10 +80,8 @@ class Slider(BaseComponent):
                     marks=self.marks,
                 )],
             id=self.parent,
-            style={
-                'width': '80%',
-                'margin-left': '10%'
-            })]
+            className='slider-component',
+        )
 
         return self.generate_wrapper(children)
 

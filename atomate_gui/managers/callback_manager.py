@@ -8,6 +8,7 @@ class CallbackManager:
         self.c_manager = component_manager
         self.q_manager = query_manager
         self.app = app
+        self.attach_callbacks()
 
     def attach_callbacks(self):
         for c_name in self.c_manager.components.keys():
@@ -26,7 +27,7 @@ class CallbackManager:
     def generate_btn_io(self):
         self.ios.append({
             "output": Output(ids["query_input"], 'value'),
-            "inputs": [Input(ids["btn"], 'n_clicks')],
+            "inputs": [Input('search-button', 'n_clicks')],
             "func": lambda n1: self.c_manager.merge_queries(),
         })
 
@@ -51,7 +52,7 @@ class CallbackManager:
                        Input('table-row-dropdown', 'value'),
                        Input('table-forward', 'n_clicks_timestamp'),
                        Input('table-backward', 'n_clicks_timestamp'),
-                       Input(ids["btn"], 'n_clicks_timestamp')],
+                       Input('search-button', 'n_clicks_timestamp')],
             "func": lambda query, fields, rpp, forward_time, backward_time, search_time: self.q_manager.create_table(query, fields, rpp, forward_time, backward_time, search_time),
         })
 

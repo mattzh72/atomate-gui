@@ -7,13 +7,13 @@ import crystal_toolkit.components as ct
 from pymatgen import Structure
 
 from app import app, collection
-from apps import search
 from apps.data_app import DataApp
+from apps.search_app import SearchApp
 
 ct.register_app(app)
 struct_component = ct.StructureMoleculeComponent()
 struct_layout = html.Div([
-    html.Div(children=struct_component.standard_layout),
+    html.Div(),
     html.Div([
         struct_component.all_layouts["title"],
         struct_component.all_layouts["legend"],
@@ -26,6 +26,12 @@ struct_layout = html.Div([
 app.layout = html.Div([
     dcc.Location(id='url', refresh=False),
     ct.MPComponent.all_app_stores(),
+    html.Div(
+        id='header',
+        children=html.H1(
+            'Materials Searcher.',
+        ),
+    ),
     html.Div(id='page-content'),
     html.Div(struct_layout)
     ])
@@ -37,9 +43,13 @@ def display_page(pathname):
     if not pathname or len(pathname) <= 1:
         raise PreventUpdate
     elif pathname == '/search':
-        return html.Div(search.layout())
+        return html.Div(SearchApp.serve_layout())
     else:
-        return html.Div(DataApp.serve_layout(pathname))
+        return html.Div(children=[
+            html.Div(struct_component.all_layouts["struct"],
+                     style={'width': '500px', 'height': '500px'}),
+            DataApp.serve_layout(pathname)
+        ])
 
 
 # This is a work-around hack to show/hide the viewer appropriately.

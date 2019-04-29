@@ -1,5 +1,6 @@
 import dash_html_components as html
 
+
 class BaseComponent:
     type = 'base'
     query = "{{ '{0}': {{ '$exists': 'true' }} }}"
@@ -21,27 +22,16 @@ class BaseComponent:
     def generate_label_div(self):
         return html.Div(
             id=self.label,
-            style={
-                'margin-top': '10px',
-                'margin-bottom': '5px',
-                'font-size': '12px',
-            }
+            className='component-label',
         )
 
     def generate_wrapper(self, children):
         return html.Div(
             id=self.wrapper,
+            className='component',
             children=children,
-            style={
-                'border': '1px dotted rgba(0,0,0,0.22)',
-                'border-radius': '5px',
-                # 'box-shadow': '0 1px 3px rgba(0,0,0,0.10), 0 1px 2px rgba(0,0,0,0.22)',
-                'height': '90px',
-                'margin': '10px',
-                'padding-top': '5px',
-                'padding-bottom': '5px',
-            }
         )
+
 
 
 

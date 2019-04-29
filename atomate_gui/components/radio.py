@@ -15,7 +15,7 @@ class RadioBoolean(BaseComponent):
         return {self.mongo: self.value}
 
     def generate_component(self):
-        children = [html.Div(
+        children = html.Div(
             children=[
                 self.generate_label_div(),
                 dcc.RadioItems(
@@ -26,11 +26,8 @@ class RadioBoolean(BaseComponent):
                     ],
                 )],
             id=self.parent,
-            style={
-                'width': '80%',
-                'margin-left': '10%'
-            }
-        )]
+            className='radio-component',
+        )
 
         return self.generate_wrapper(children)
 

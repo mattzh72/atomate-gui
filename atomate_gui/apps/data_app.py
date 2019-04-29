@@ -12,7 +12,6 @@ class DataApp:
         'spacegroup.crystal_system',
         'bandstructure.is_metal',
         'structure.lattice.volume',
-        'stability.decomposes_to',
         'bandstructure.bandgap',
         'bandstructure.is_gap_direct'
     ]
@@ -38,7 +37,7 @@ class DataApp:
                     'text-align': 'center',
                     'margin-left': '25%',
                 }),
-            html.Div(id='data-table')
+            html.Div(id='data-table'),
         ])
 
     @staticmethod

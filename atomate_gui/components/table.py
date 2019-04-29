@@ -1,7 +1,5 @@
-import ast
 import pandas as pd
 import dash_html_components as html
-from app import collection
 import collections
 
 
@@ -35,14 +33,8 @@ class CollectionTable:
         table_output = header + body
 
         return html.Table(
-            table_output,
-            style={
-                'width': '90%',
-                'margin-left': '5%',
-                'margin-top': '10px',
-                'height': '80%',
-                'text-align': 'center',
-            }
+            id='search-table',
+            children=table_output,
         )
 
     @staticmethod
