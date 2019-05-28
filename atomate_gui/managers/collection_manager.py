@@ -1,9 +1,9 @@
 import collections
+from atomate_gui.app import collection
 
 
 class CollectionManager:
-    def __init__(self, collection):
-        self.collection = collection
+    def __init__(self):
         self.metadata = []
         self.nested = False
 
@@ -18,7 +18,7 @@ class CollectionManager:
         return dict(items)
 
     def set_metadata(self):
-        fields = self.flatten_collection(self.collection.find_one())
+        fields = self.flatten_collection(collection.find_one())
 
         for name, value in fields.items():
             if name[0] != "_":
@@ -48,7 +48,7 @@ class CollectionManager:
         self.detect_ranges()
 
     def detect_ranges(self):
-        for post in self.collection.find():
+        for post in collection.find():
             for item in self.metadata:
                 if item['type'] is int:
                     try:

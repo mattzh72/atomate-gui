@@ -1,9 +1,9 @@
-from components.base import BaseComponent
+from atomate_gui.components.base import BaseComponent
 import dash_core_components as dcc
 import dash_html_components as html
 
 
-class Input(BaseComponent):
+class TextArea(BaseComponent):
     type = 'input'
 
     def __init__(self, name):
@@ -11,7 +11,7 @@ class Input(BaseComponent):
         self.placeholder = 'Enter a value for ' + self.name
 
     def get_query(self):
-        return {self.mongo: {'$regex': '.*' + self.value + '.*'}}
+        return {self.mongo: {'$regex': '.*' + self.value + '.*'}} if self.value else self.get_base_query()
 
     def generate_component(self):
         children = html.Div(
@@ -30,11 +30,11 @@ class Input(BaseComponent):
         return self.generate_wrapper(children)
 
     def get_label(self):
-        return '{0} is {1}'.format(self.mongo, self.value)
+        return '{0} is {1}'.format(self.mongo, self.value if self.value else '')
 
     def __str__(self):
         return str({
-            'type': Input.type,
+            'type': TextArea.type,
             'name': self.name
         })
 

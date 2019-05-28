@@ -1,12 +1,12 @@
-from app import app, collection
-from components.table import CollectionTable
+from atomate_gui.app import app, collection
+from atomate_gui.components.table import CollectionTable
 import dash_html_components as html
 import dash_core_components as dcc
 from dash.dependencies import Input, Output
 from dash.exceptions import PreventUpdate
 
 
-class DataApp:
+class InfoApp:
     default_display_fields = [
         'spacegroup.number',
         'spacegroup.crystal_system',
@@ -18,7 +18,7 @@ class DataApp:
 
     @staticmethod
     def serve_layout(pathname):
-        entry = DataApp.get_entry(pathname)
+        entry = InfoApp.get_entry(pathname)
 
         return html.Div(children=[
             html.H1(
@@ -30,7 +30,7 @@ class DataApp:
                 }
             ),
             html.Div(
-                DataApp.generate_dropdown(entry),
+                InfoApp.generate_dropdown(entry),
                 style={
                     'width': '50%',
                     'margin-bottom': '20px',
@@ -60,7 +60,7 @@ class DataApp:
             id='data-table-dropdown',
             options=options,
             multi=True,
-            value=DataApp.default_display_fields,
+            value=InfoApp.default_display_fields,
             placeholder="Select query fields...",
         )
 
@@ -77,10 +77,10 @@ class DataApp:
     @staticmethod
     def generate_data_table(pathname, values):
         display_fields = {}
-        entry = DataApp.get_entry(pathname)
+        entry = InfoApp.get_entry(pathname)
 
         for value in values:
-            display_fields[value] = DataApp.get_dict_value(entry, value)
+            display_fields[value] = InfoApp.get_dict_value(entry, value)
 
         return CollectionTable.generate_details_table(display_fields)
 
@@ -92,4 +92,4 @@ def display_data_table(pathname, values):
     if not pathname or len(pathname) <= 1 or pathname == '/search' or not values:
         raise PreventUpdate
     else:
-        return DataApp.generate_data_table(pathname, values)
+        return InfoApp.generate_data_table(pathname, values)

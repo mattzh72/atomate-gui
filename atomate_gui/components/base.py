@@ -16,8 +16,8 @@ class BaseComponent:
         self.parent = self.name + '-parent-container'
         self.wrapper = self.name + '-wrapper'
 
-    def get_query(self):
-        return {self.m_name: {'$exists': 'true'}}
+    def get_base_query(self):
+        return {self.mongo: {'$exists': 'true'}}
 
     def generate_label_div(self):
         return html.Div(

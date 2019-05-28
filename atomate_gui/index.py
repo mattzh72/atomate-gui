@@ -6,9 +6,9 @@ from dash.exceptions import PreventUpdate
 import crystal_toolkit.components as ct
 from pymatgen import Structure
 
-from app import app, collection
-from apps.data_app import DataApp
-from apps.search_app import SearchApp
+from atomate_gui.app import app, collection
+from atomate_gui.apps.info import InfoApp
+from atomate_gui.apps.search import SearchApp
 
 ct.register_app(app)
 struct_component = ct.StructureMoleculeComponent()
@@ -48,7 +48,7 @@ def display_page(pathname):
         return html.Div(children=[
             html.Div(struct_component.all_layouts["struct"],
                      style={'width': '500px', 'height': '500px'}),
-            DataApp.serve_layout(pathname)
+            InfoApp.serve_layout(pathname)
         ])
 
 

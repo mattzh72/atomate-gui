@@ -26,45 +26,6 @@ a {
     box-shadow: 0 2px 5px rgba(0,0,0,0.12), 0 2px 5px rgba(0,0,0,0.24);
 }
 
-/* OVERRIDE DEFAULT PLOTLY CSS
-–––––––––––––––––––––––––––––––––––––––––––––––––– */
-.rc-slider-track {
-    background-color: #ef5350;
-}
-
-.rc-slider-handle, .rc-slider-dot-active {
-    border-color: #ef5350;
-}
-
-.rc-slider-handle:hover {
-    border-color: #ef5350;
-}
-
-#query-dropdown .Select--multi .Select-value, #field-dropdown .Select--multi .Select-value {
-  background-color: #ef5350;
-  /* Fallback color for IE 8 */
-  border-radius: 2px;
-  border: 1px solid #ef5350;
-  /* Fallback color for IE 8 */
-  color: white;
-  display: inline-block;
-  font-size: 0.9em;
-  line-height: 1.4;
-  margin-left: 5px;
-  margin-top: 5px;
-  vertical-align: top;
-}
-
-#query-dropdown .Select-value-icon:hover, #field-dropdown .Select-value-icon:hover {
-    background-color: white;
-    color: #ef5350;
-}
-
-#query-dropdown .Select-value-icon, #field-dropdown .Select-value-icon {
-    border-right: 1px solid #ef5350;
-}
-
-
 /* Side Bar
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
 #side-bar {
@@ -119,12 +80,12 @@ a {
     font-size: 15px;
 }
 
-.input-component, .slider-component, .radio-component {
+.input-component, .slider-component, .checkbox-component {
     width: 85%;
     margin-left: 7.5%;
 }
 
-.radio-component {
+.checkbox-component {
     margin: 20px;
 }
 
@@ -140,14 +101,14 @@ a {
     height: calc(100vh - 100px);
 }
 
-#query-dropdown, #field-dropdown {
+#query-dropdown, #field-dropdown, #search-table-wrapper {
     width: 90%;
     margin-bottom: 10px;
 }
 
-#search-table {
-    width: 100%;
+#search-table-wrapper {
     text-align: center;
+    margin-top: 20px;
 }
 
 #table-selectors {
@@ -186,16 +147,6 @@ a {
     display: inline-block;
 }
 
-#search-table {
-    margin-top: 25px;
-    width: 90%;
-}
-
-
-#search-table tr:nth-child(even) {
-  background: rgba(0,0,0,0.04);
-}
-
 /* Buttons
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
 button {
@@ -217,7 +168,7 @@ input[type=text] {
     border-radius: 2px;
 }
 
-input[type=radio] {
+input[type=checkbox] {
     margin-left: 50px;
     margin-right: 5px;
     border: 1px solid #D3D3D3;

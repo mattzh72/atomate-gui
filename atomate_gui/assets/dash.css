@@ -1,0 +1,68 @@
+/* OVERRIDE DEFAULT PLOTLY CSS
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
+
+/* Sidebar Styling
+INCLUDES SLIDERS
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
+.rc-slider-track {
+    background-color: #ef5350;
+}
+
+.rc-slider-handle, .rc-slider-dot-active {
+    border-color: #ef5350;
+}
+
+.rc-slider-handle:hover {
+    border-color: #ef5350;
+}
+
+/* Table Styling
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
+td.cell--selected {
+    background-color: #ef5350 !important;
+    color: white !important;
+    box-shadow: 0px 0px 0px 0px white !important;
+}
+
+#search-table-wrapper .sort {
+    color: #ef5350 !important;
+}
+
+#search-table-wrapper .previous-page, #search-table-wrapper .next-page {
+    display: inline-block;
+    font-size: 12px;
+    border-radius: 3px;
+    padding: 10px;
+    background-color: #f44336;
+    color: #ecf0f1;
+    width: 15%;
+    border-color: #e53935;
+    text-transform: uppercase;
+    margin: 10px;
+}
+
+/* Drop-down Styling
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
+#query-dropdown .Select--multi .Select-value, #field-dropdown .Select--multi .Select-value {
+  background-color: #ef5350;
+  /* Fallback color for IE 8 */
+  border-radius: 2px;
+  border: 1px solid #ef5350;
+  /* Fallback color for IE 8 */
+  color: white;
+  display: inline-block;
+  font-size: 0.9em;
+  line-height: 1.4;
+  margin-left: 5px;
+  margin-top: 5px;
+  vertical-align: top;
+}
+
+#query-dropdown .Select-value-icon:hover, #field-dropdown .Select-value-icon:hover {
+    background-color: white;
+    color: #ef5350;
+}
+
+#query-dropdown .Select-value-icon, #field-dropdown .Select-value-icon {
+    border-right: 1px solid #ef5350;
+}
