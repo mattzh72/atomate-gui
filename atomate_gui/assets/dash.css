@@ -41,9 +41,15 @@ td.cell--selected {
     margin: 10px;
 }
 
+#search-table-wrapper .previous-page:hover, #search-table-wrapper .next-page:hover {
+    background-color: #e53935;
+}
+
 /* Drop-down Styling
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
-#query-dropdown .Select--multi .Select-value, #field-dropdown .Select--multi .Select-value {
+#query-dropdown .Select--multi .Select-value,
+#field-dropdown .Select--multi .Select-value,
+#info-dropdown .Select--multi .Select-value {
   background-color: #ef5350;
   /* Fallback color for IE 8 */
   border-radius: 2px;
@@ -58,11 +64,15 @@ td.cell--selected {
   vertical-align: top;
 }
 
-#query-dropdown .Select-value-icon:hover, #field-dropdown .Select-value-icon:hover {
+#query-dropdown .Select-value-icon:hover,
+#field-dropdown .Select-value-icon:hover,
+#info-dropdown .Select-value-icon:hover {
     background-color: white;
     color: #ef5350;
 }
 
-#query-dropdown .Select-value-icon, #field-dropdown .Select-value-icon {
+#query-dropdown .Select-value-icon,
+#field-dropdown .Select-value-icon,
+#info-dropdown .Select-value-icon {
     border-right: 1px solid #ef5350;
 }

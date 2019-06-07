@@ -13,14 +13,11 @@ from atomate_gui.apps.search import SearchApp
 ct.register_app(app)
 struct_component = ct.StructureMoleculeComponent()
 struct_layout = html.Div([
-    html.Div(),
-    html.Div([
-        struct_component.all_layouts["title"],
-        struct_component.all_layouts["legend"],
-        struct_component.all_layouts["options"],
-        struct_component.all_layouts["screenshot"]],
-    )],
-    id='visualizer',
+    struct_component.all_layouts["title"],
+    struct_component.all_layouts["legend"],
+    struct_component.all_layouts["options"],
+    struct_component.all_layouts["screenshot"]],
+    id='visualizer-tools',
 )
 
 app.layout = html.Div([
@@ -46,14 +43,16 @@ def display_page(pathname):
         return html.Div(SearchApp.serve_layout())
     else:
         return html.Div(children=[
-            html.Div(struct_component.all_layouts["struct"],
-                     style={'width': '500px', 'height': '500px'}),
+            html.Div(
+                struct_component.all_layouts["struct"],
+                id='visualizer',
+            ),
             InfoApp.serve_layout(pathname)
         ])
 
 
 # This is a work-around hack to show/hide the viewer appropriately.
-@app.callback(Output('visualizer', 'style'),
+@app.callback(Output('visualizer-tools', 'style'),
               [Input('url', 'pathname')])
 def display_page(pathname):
     if not pathname or len(pathname) <= 1:
@@ -61,7 +60,7 @@ def display_page(pathname):
     elif pathname == '/search':
         return {"display": "none"}
     else:
-        return {"display": "block"}
+        return {"display": "none"}
 
 
 # This is to update the viewer with the appropriate material.

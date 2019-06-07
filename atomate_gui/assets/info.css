@@ -1,0 +1,8 @@
+#visualizer {
+    width: 500px;
+    height: 500px;
+}
+
+#visualizer-tools {
+    display: none;
+}
